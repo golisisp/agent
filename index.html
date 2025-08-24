@@ -17,39 +17,11 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
-      background-size: 400% 400%;
-      animation: gradientShift 8s ease infinite;
+      background: linear-gradient(135deg, #36454F, #2c3e50);
       color: white;
       padding: 20px;
       position: relative;
       overflow-x: hidden;
-    }
-
-    @keyframes gradientShift {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
-    /* Animated background elements */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-                  radial-gradient(circle at 40% 40%, rgba(120, 255, 198, 0.2) 0%, transparent 50%);
-      pointer-events: none;
-      animation: float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      33% { transform: translateY(-10px) rotate(1deg); }
-      66% { transform: translateY(5px) rotate(-1deg); }
     }
 
     .container {
@@ -65,28 +37,10 @@
       text-align: center;
       font-weight: 800;
       background: linear-gradient(135deg, #64ffda, #00d4ff, #0099ff, #ff6b9d);
-      background-size: 300% 300%;
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: gradientText 4s ease infinite, textGlow 3s ease-in-out infinite alternate;
       position: relative;
-    }
-
-    @keyframes gradientText {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
-    @keyframes textGlow {
-      from { 
-        filter: drop-shadow(0 0 10px rgba(100, 255, 218, 0.3));
-        transform: scale(1);
-      }
-      to { 
-        filter: drop-shadow(0 0 20px rgba(100, 255, 218, 0.6));
-        transform: scale(1.02);
-      }
     }
 
     details {
@@ -292,39 +246,7 @@
 
     /* Floating particles */
     .particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .particle {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: rgba(100, 255, 218, 0.6);
-      border-radius: 50%;
-      animation: floatParticle 8s linear infinite;
-    }
-
-    @keyframes floatParticle {
-      0% {
-        transform: translateY(100vh) rotate(0deg);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      90% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-10vh) rotate(360deg);
-        opacity: 0;
-      }
+      display: none;
     }
 
     @media (max-width: 768px) {
@@ -370,7 +292,7 @@
     <details>
       <summary>Full App Update <span class="arrow">▶</span></summary>
       <div class="content">
-        <div class="version">Last Version: <strong id="billing-version">Loading...</strong></div>
+        <div class="version">Last Version: <strong id="ac-version">Loading...</strong></div>
         <button class="apk-btn" onclick="downloadApp(this)">
           <span>📥</span> Download
         </button>
@@ -390,7 +312,7 @@
     <details>
       <summary>Accounting Update <span class="arrow">▶</span></summary>
       <div class="content">
-        <div class="version">Last Version: <strong id="ac-version">Loading...</strong></div>
+        <div class="version">Last Version: <strong id="billing-version">Loading...</strong></div>
         <button class="apk-btn" onclick="downloadApp(this)">
           <span>📥</span> Download
         </button>
@@ -409,19 +331,9 @@
   </div>
 
   <script>
-    // Create floating particles
+    // Create floating particles - DISABLED
     function createParticles() {
-      const particlesContainer = document.getElementById('particles');
-      const particleCount = 20;
-      
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 8 + 's';
-        particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
-        particlesContainer.appendChild(particle);
-      }
+      // Particles disabled for cleaner look
     }
 
     // Enhanced download simulation
@@ -489,11 +401,10 @@
 
     // Firebase version URLs
     const versionUrls = {
-      'billing-version': 'https://golisiapp-default-rtdb.firebaseio.com/billingVersion.json',
-      'agent-version': 'https://golisiapp-default-rtdb.firebaseio.com/AGENT_VERSION.json',
       'ac-version': 'https://golisiapp-default-rtdb.firebaseio.com/AC_VERSION.json',
-      'elc-version': 'https://golisiapp-default-rtdb.firebaseio.com/ELC_VERSION.json'
-      
+      'agent-version': 'https://golisiapp-default-rtdb.firebaseio.com/AGENT_VERSION.json',
+      'elc-version': 'https://golisiapp-default-rtdb.firebaseio.com/ELC_VERSION.json',
+      'billing-version': 'https://golisiapp-default-rtdb.firebaseio.com/billingVersion.json'
     };
 
     // Fetch version data from Firebase
