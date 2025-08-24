@@ -435,77 +435,123 @@
     const statusUrl = 'https://golisiapp-default-rtdb.firebaseio.com/status.json';
 
     // Fetch status data from Firebase
-    async function loadStatus() {
-      try {
-        const response = await fetch(statusUrl);
-        const data = await response.json();
+    // Fetch status data from Firebase
+async function loadStatus() {
+  try {
+    const response = await fetch(statusUrl);
+    const data = await response.json();
+
+    // Map status data to indicators
+    const statusMapping = {
+      'billing-status': data.billingUpdate,
+      'agent-status': data.agentUpdate,
+      'acc-status': data.accUpdate,
+      'elec-status': data.elecUpdate
+    };
+
+    // Update status indicators
+    for (const [elementId, isActive] of Object.entries(statusMapping)) {
+      const element = document.getElementById(elementId);
+
+      // Get summary element
+      const summary = element ? element.closest('details').querySelector('summary') : null;
+
+      if (element) {
+        if (isActive) {
+          element.classList.add('active');
+
+          // Add indicator span before name if not already added
+          if (summary && !summary.querySelector('.status-indicator')) {
+            const indicator = document.createElement('span');
+            indicator.classList.add('status-indicator', 'active');
+            summary.prepend(indicator);
+          }
+        } else {
+          element.classList.remove('active');
+          // Remove indicator if present
+          if (summary) {
+            const existing = summary.querySelector('.status-indicator');
+            if (existing) existing.remove();
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Failed to load status:', error);
+  }
+}
+
+    // async function loadStatus() {
+    //   try {
+    //     const response = await fetch(statusUrl);
+    //     const data = await response.json();
         
-        // Map status data to indicators
-        const statusMapping = {
-          'billing-status': data.billingUpdate,
-          'agent-status': data.agentUpdate,
-          'acc-status': data.accUpdate,
-          'elec-status': data.elecUpdate
-        };
+    //     // Map status data to indicators
+    //     const statusMapping = {
+    //       'billing-status': data.billingUpdate,
+    //       'agent-status': data.agentUpdate,
+    //       'acc-status': data.accUpdate,
+    //       'elec-status': data.elecUpdate
+    //     };
 
-        // Update status indicators
-        for (const [elementId, isActive] of Object.entries(statusMapping)) {
-          const element = document.getElementById(elementId);
-          if (element) {
-            if (isActive) {
-              element.classList.add('active');
-            } else {
-              element.classList.remove('active');
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Failed to load status:', error);
-      }
-    }
+    //     // Update status indicators
+    //     for (const [elementId, isActive] of Object.entries(statusMapping)) {
+    //       const element = document.getElementById(elementId);
+    //       if (element) {
+    //         if (isActive) {
+    //           element.classList.add('active');
+    //         } else {
+    //           element.classList.remove('active');
+    //         }
+    //       }
+    //     }
+    //   } catch (error) {
+    //     console.error('Failed to load status:', error);
+    //   }
+    // }
 
-    // Fetch version data from Firebase
-    async function loadVersions() {
-      for (const [elementId, url] of Object.entries(versionUrls)) {
-        try {
-          const response = await fetch(url);
-          const data = await response.json();
+    // // Fetch version data from Firebase
+    // async function loadVersions() {
+    //   for (const [elementId, url] of Object.entries(versionUrls)) {
+    //     try {
+    //       const response = await fetch(url);
+    //       const data = await response.json();
           
-          const element = document.getElementById(elementId);
-          if (element) {
-            // Handle different possible JSON structures
-            let version = 'Unknown';
-            if (typeof data === 'string') {
-              version = data;
-            } else if (data.version) {
-              version = data.version;
-            } else if (data.versionName) {
-              version = data.versionName;
-            } else if (data.currentVersion) {
-              version = data.currentVersion;
-            } else if (typeof data === 'object') {
-              // If it's an object, try to find a version-like property
-              const versionKeys = Object.keys(data).filter(key => 
-                key.toLowerCase().includes('version') || key.toLowerCase().includes('ver')
-              );
-              if (versionKeys.length > 0) {
-                version = data[versionKeys[0]];
-              }
-            }
+    //       const element = document.getElementById(elementId);
+    //       if (element) {
+    //         // Handle different possible JSON structures
+    //         let version = 'Unknown';
+    //         if (typeof data === 'string') {
+    //           version = data;
+    //         } else if (data.version) {
+    //           version = data.version;
+    //         } else if (data.versionName) {
+    //           version = data.versionName;
+    //         } else if (data.currentVersion) {
+    //           version = data.currentVersion;
+    //         } else if (typeof data === 'object') {
+    //           // If it's an object, try to find a version-like property
+    //           const versionKeys = Object.keys(data).filter(key => 
+    //             key.toLowerCase().includes('version') || key.toLowerCase().includes('ver')
+    //           );
+    //           if (versionKeys.length > 0) {
+    //             version = data[versionKeys[0]];
+    //           }
+    //         }
             
-            element.textContent = version;
-            element.style.animation = 'fadeIn 0.5s ease';
-          }
-        } catch (error) {
-          console.error(`Failed to load version for ${elementId}:`, error);
-          const element = document.getElementById(elementId);
-          if (element) {
-            element.textContent = 'Error loading';
-            element.style.color = '#ff6b6b';
-          }
-        }
-      }
-    }
+    //         element.textContent = version;
+    //         element.style.animation = 'fadeIn 0.5s ease';
+    //       }
+    //     } catch (error) {
+    //       console.error(`Failed to load version for ${elementId}:`, error);
+    //       const element = document.getElementById(elementId);
+    //       if (element) {
+    //         element.textContent = 'Error loading';
+    //         element.style.color = '#ff6b6b';
+    //       }
+    //     }
+    //   }
+    // }
 
     // Add loading animation
     const loadingStyle = document.createElement('style');
