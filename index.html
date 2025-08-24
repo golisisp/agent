@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Advanced App Updates</title>
+  <title>Updates Golis AgentAPP</title>
   <style>
     * {
       margin: 0;
@@ -311,7 +311,7 @@
     <h1>📦 App Updates</h1>
     
     <details>
-      <summary>Full App Update <span class="arrow active">▶</span></summary>
+      <summary><span class="status-indicator" id="billing-status-summary"></span> Full App Update <span class="arrow">▶</span></summary>
       <div class="content">
         <div class="version">Last Version: <strong id="billing-version">Loading...</strong></div>
         <a href="#" class="apk-btn">
@@ -321,7 +321,7 @@
     </details>
     
     <details>
-      <summary>Agent Update <span class="arrow">▶</span></summary>
+      <summary><span class="status-indicator" id="agent-status-summary"></span> Agent Update <span class="arrow">▶</span></summary>
       <div class="content">
         <div class="version">Last Version: <strong id="agent-version">Loading...</strong></div>
         <a href="#" class="apk-btn">
@@ -331,7 +331,7 @@
     </details>
     
     <details>
-      <summary>Accounting Update <span class="arrow">▶</span></summary>
+      <summary><span class="status-indicator" id="ac-status-summary"></span> Accounting Update <span class="arrow">▶</span></summary>
       <div class="content">
         <div class="version">Last Version: <strong id="ac-version">Loading...</strong></div>
         <a href="#" class="apk-btn">
@@ -341,7 +341,7 @@
     </details>
     
     <details>
-      <summary>Electric Update <span class="arrow">▶</span></summary>
+      <summary><span class="status-indicator" id="elc-status-summary"></span> Electric Update <span class="arrow">▶</span></summary>
       <div class="content">
         <div class="version">Last Version: <strong id="elc-version">Loading...</strong></div>
         <a href="#" class="apk-btn">
@@ -444,25 +444,30 @@
         
         // Map status data to indicators
         const statusMapping = {
-          'billing-status': data.billingUpdate,
-          'agent-status': data.agentUpdate,
-          'acc-status': data.accUpdate,
-          'elec-status': data.elecUpdate
+          'billing-version': data.billingUpdate,
+          'agent-version': data.agentUpdate,
+          'ac-version': data.accUpdate,
+          'elc-version': data.elecUpdate
         };
 
         console.log('Status mapping:', statusMapping);
 
         // Update status indicators
         for (const [elementId, isActive] of Object.entries(statusMapping)) {
-          const element = document.getElementById(elementId);
-          console.log(`Updating ${elementId}:`, isActive, element);
-          if (element) {
-            if (isActive === true) {
-              element.classList.add('active');
-              console.log(`Added active class to ${elementId}`);
-            } else {
-              element.classList.remove('active');
-              console.log(`Removed active class from ${elementId}`);
+          // Update dot before name label in summary only
+          let summaryId = '';
+          if (elementId === 'billing-version') summaryId = 'billing-status-summary';
+          if (elementId === 'agent-version') summaryId = 'agent-status-summary';
+          if (elementId === 'ac-version') summaryId = 'ac-status-summary';
+          if (elementId === 'elc-version') summaryId = 'elc-status-summary';
+          if (summaryId) {
+            const summaryDot = document.getElementById(summaryId);
+            if (summaryDot) {
+              if (isActive === true) {
+                summaryDot.classList.add('active');
+              } else {
+                summaryDot.classList.remove('active');
+              }
             }
           }
         }
