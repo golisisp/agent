@@ -331,6 +331,9 @@
   </div>
 
   <script>
+    // Download link variable
+    const downloadLink = "https://your-download-url.com/app.apk";
+    
     // Create floating particles - DISABLED
     function createParticles() {
       // Particles disabled for cleaner look
@@ -488,6 +491,12 @@
 
     // Initialize everything
     document.addEventListener('DOMContentLoaded', () => {
+      // Set all download buttons to use the same download link
+      const downloadButtons = document.querySelectorAll('.apk-btn');
+      downloadButtons.forEach(button => {
+        button.href = downloadLink;
+      });
+      
       createParticles();
       loadVersions(); // Load real version data from Firebase
       addHoverEffects();
