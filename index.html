@@ -5,132 +5,626 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Advanced App Updates</title>
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: Arial, sans-serif;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      background: linear-gradient(135deg, #36454F, #2c3e50);
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
       color: white;
       padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Animated background elements */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                  radial-gradient(circle at 40% 40%, rgba(120, 255, 198, 0.2) 0%, transparent 50%);
+      pointer-events: none;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      33% { transform: translateY(-10px) rotate(1deg); }
+      66% { transform: translateY(5px) rotate(-1deg); }
     }
 
     .container {
       width: 100%;
       max-width: 600px;
+      position: relative;
+      z-index: 10;
     }
 
     h1 {
-      font-size: 2.2rem;
-      margin-bottom: 25px;
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      margin-bottom: 35px;
       text-align: center;
+      font-weight: 800;
+      background: linear-gradient(135deg, #64ffda, #00d4ff, #0099ff, #ff6b9d);
+      background-size: 300% 300%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientText 4s ease infinite, textGlow 3s ease-in-out infinite alternate;
+      position: relative;
+    }
+
+    @keyframes gradientText {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes textGlow {
+      from { 
+        filter: drop-shadow(0 0 10px rgba(100, 255, 218, 0.3));
+        transform: scale(1);
+      }
+      to { 
+        filter: drop-shadow(0 0 20px rgba(100, 255, 218, 0.6));
+        transform: scale(1.02);
+      }
     }
 
     details {
-      background: #2f3e46;
-      border-radius: 12px;
-      margin-bottom: 15px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      margin-bottom: 20px;
       padding: 0;
       overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      transition: all 0.3s ease;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+    }
+
+    details::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.6s;
+    }
+
+    details:hover::before {
+      left: 100%;
+    }
+
+    details:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 15px 45px rgba(100, 255, 218, 0.2),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(100, 255, 218, 0.4);
     }
 
     summary {
-      font-size: 1.3rem;
-      font-weight: bold;
+      font-size: 1.4rem;
+      font-weight: 700;
       cursor: pointer;
-      padding: 15px 20px;
+      padding: 25px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       list-style: none;
-      transition: background 0.3s ease;
+      transition: all 0.3s ease;
+      position: relative;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
     }
 
     summary:hover {
-      background: #3c4b57;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
     }
 
+
+
     .arrow {
-      transition: transform 0.3s ease;
+      font-size: 1.2rem;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      color: #64ffda;
+      text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
     }
 
     details[open] .arrow {
-      transform: rotate(90deg);
+      transform: rotate(90deg) scale(1.2);
+      color: #ff6b9d;
+      text-shadow: 0 0 15px rgba(255, 107, 157, 0.7);
     }
 
     .content {
-      background: #1b263b;
-      padding: 15px 20px;
-      animation: fadeIn 0.3s ease;
+      background: linear-gradient(135deg, rgba(15, 15, 35, 0.8) 0%, rgba(26, 26, 46, 0.6) 100%);
+      padding: 30px;
+      animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+    }
+
+    .content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #64ffda, #00d4ff, #0099ff);
+      opacity: 0.8;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .version {
-      font-size: 1rem;
-      margin-bottom: 10px;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      padding: 15px 20px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      border-left: 4px solid #64ffda;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .version::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(100, 255, 218, 0.1), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .version:hover::before {
+      opacity: 1;
+    }
+
+    .version strong {
+      color: #64ffda;
+      font-weight: 700;
+      text-shadow: 0 0 8px rgba(100, 255, 218, 0.4);
     }
 
     .apk-btn {
-      display: inline-block;
-      padding: 10px 22px;
-      font-size: 1rem;
-      color: #36454F;
-      background: white;
-      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 15px 28px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0f0f23;
+      background: linear-gradient(135deg, #64ffda 0%, #00d4ff 100%);
+      border-radius: 12px;
       text-decoration: none;
-      transition: background 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
+      position: relative;
+      overflow: hidden;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .apk-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .apk-btn:hover::before {
+      left: 100%;
     }
 
     .apk-btn:hover {
-      background: #f1f1f1;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(100, 255, 218, 0.5);
+      background: linear-gradient(135deg, #00d4ff 0%, #64ffda 100%);
     }
 
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(-5px);}
-      to {opacity: 1; transform: translateY(0);}
+    .apk-btn:active {
+      transform: translateY(-1px) scale(1.02);
+    }
+
+    /* Progress animation for downloads */
+    .downloading {
+      position: relative;
+      pointer-events: none;
+    }
+
+    .downloading::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+      animation: downloadProgress 2s linear infinite;
+    }
+
+    @keyframes downloadProgress {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* Floating particles */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(100, 255, 218, 0.6);
+      border-radius: 50%;
+      animation: floatParticle 8s linear infinite;
+    }
+
+    @keyframes floatParticle {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 15px;
+      }
+      
+      .container {
+        max-width: 100%;
+      }
+      
+      h1 {
+        font-size: 2.2rem;
+        margin-bottom: 25px;
+      }
+      
+      details {
+        margin-bottom: 15px;
+      }
+      
+      summary {
+        font-size: 1.2rem;
+        padding: 20px 25px;
+      }
+      
+      .content {
+        padding: 25px;
+      }
+      
+      .apk-btn {
+        padding: 12px 24px;
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="particles" id="particles"></div>
+  
   <div class="container">
     <h1>📦 App Updates</h1>
-
+    
     <details>
       <summary>Full App Update <span class="arrow">▶</span></summary>
       <div class="content">
-        <div class="version">Last Version: <strong>2.0.1</strong></div>
-        <a href="#" class="apk-btn">Download</a>
+        <div class="version">Last Version: <strong id="ac-version">Loading...</strong></div>
+        <button class="apk-btn" onclick="downloadApp(this)">
+          <span>📥</span> Download
+        </button>
       </div>
     </details>
-
+    
     <details>
       <summary>Agent Update <span class="arrow">▶</span></summary>
       <div class="content">
-        <div class="version">Last Version: <strong>1.5.3</strong></div>
-        <a href="#" class="apk-btn">Download</a>
+        <div class="version">Last Version: <strong id="agent-version">Loading...</strong></div>
+        <button class="apk-btn" onclick="downloadApp(this)">
+          <span>📥</span> Download
+        </button>
       </div>
     </details>
-
+    
     <details>
       <summary>Accounting Update <span class="arrow">▶</span></summary>
       <div class="content">
-        <div class="version">Last Version: <strong>1.2.7</strong></div>
-        <a href="#" class="apk-btn">Download</a>
+        <div class="version">Last Version: <strong id="billing-version">Loading...</strong></div>
+        <button class="apk-btn" onclick="downloadApp(this)">
+          <span>📥</span> Download
+        </button>
       </div>
     </details>
-
+    
     <details>
       <summary>Electric Update <span class="arrow">▶</span></summary>
       <div class="content">
-        <div class="version">Last Version: <strong>1.8.4</strong></div>
-        <a href="#" class="apk-btn">Download</a>
+        <div class="version">Last Version: <strong id="elc-version">Loading...</strong></div>
+        <button class="apk-btn" onclick="downloadApp(this)">
+          <span>📥</span> Download
+        </button>
       </div>
     </details>
-
   </div>
+
+  <script>
+    // Create floating particles
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 20;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Enhanced download simulation
+    function downloadApp(button) {
+      const appName = button.closest('details').querySelector('summary').textContent.replace('▶', '').trim();
+      const version = button.closest('.content').querySelector('strong').textContent;
+      
+      // Add downloading state
+      button.classList.add('downloading');
+      button.innerHTML = '<span>⏳</span> Downloading...';
+      button.disabled = true;
+      
+      // Simulate download progress
+      setTimeout(() => {
+        button.innerHTML = '<span>✅</span> Downloaded!';
+        button.style.background = 'linear-gradient(135deg, #4ade80, #22c55e)';
+        
+        // Reset after 3 seconds
+        setTimeout(() => {
+          button.classList.remove('downloading');
+          button.innerHTML = '<span>📥</span> Download';
+          button.style.background = '';
+          button.disabled = false;
+        }, 3000);
+      }, 2000);
+      
+      // Show download notification
+      showNotification(`Downloading ${appName} v${version}`);
+    }
+
+    // Notification system
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, rgba(100, 255, 218, 0.9), rgba(0, 212, 255, 0.9));
+        color: #0f0f23;
+        padding: 15px 25px;
+        border-radius: 12px;
+        font-weight: 600;
+        box-shadow: 0 8px 32px rgba(100, 255, 218, 0.3);
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+      `;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      // Animate in
+      setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+      }, 100);
+      
+      // Animate out and remove
+      setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 3000);
+    }
+
+    // Firebase version URLs
+    const versionUrls = {
+      'ac-version': 'https://golisiapp-default-rtdb.firebaseio.com/AC_VERSION.json',
+      'agent-version': 'https://golisiapp-default-rtdb.firebaseio.com/AGENT_VERSION.json',
+      'elc-version': 'https://golisiapp-default-rtdb.firebaseio.com/ELC_VERSION.json',
+      'billing-version': 'https://golisiapp-default-rtdb.firebaseio.com/billingVersion.json'
+    };
+
+    // Fetch version data from Firebase
+    async function loadVersions() {
+      for (const [elementId, url] of Object.entries(versionUrls)) {
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+          
+          const element = document.getElementById(elementId);
+          if (element) {
+            // Handle different possible JSON structures
+            let version = 'Unknown';
+            if (typeof data === 'string') {
+              version = data;
+            } else if (data.version) {
+              version = data.version;
+            } else if (data.versionName) {
+              version = data.versionName;
+            } else if (data.currentVersion) {
+              version = data.currentVersion;
+            } else if (typeof data === 'object') {
+              // If it's an object, try to find a version-like property
+              const versionKeys = Object.keys(data).filter(key => 
+                key.toLowerCase().includes('version') || key.toLowerCase().includes('ver')
+              );
+              if (versionKeys.length > 0) {
+                version = data[versionKeys[0]];
+              }
+            }
+            
+            element.textContent = version;
+            element.style.animation = 'fadeIn 0.5s ease';
+          }
+        } catch (error) {
+          console.error(`Failed to load version for ${elementId}:`, error);
+          const element = document.getElementById(elementId);
+          if (element) {
+            element.textContent = 'Error loading';
+            element.style.color = '#ff6b6b';
+          }
+        }
+      }
+    }
+
+    // Add loading animation
+    const loadingStyle = document.createElement('style');
+    loadingStyle.textContent = `
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateX(-10px); }
+        to { opacity: 1; transform: translateX(0); }
+      }
+      
+      @keyframes loadingPulse {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+      }
+      
+      .version strong {
+        animation: loadingPulse 1.5s ease-in-out infinite;
+      }
+    `;
+    document.head.appendChild(loadingStyle);
+
+    // Enhanced hover effects
+    function addHoverEffects() {
+      const details = document.querySelectorAll('details');
+      
+      details.forEach(detail => {
+        detail.addEventListener('mouseenter', () => {
+          detail.style.transform = 'translateY(-5px) scale(1.02)';
+        });
+        
+        detail.addEventListener('mouseleave', () => {
+          if (!detail.hasAttribute('open')) {
+            detail.style.transform = 'translateY(0) scale(1)';
+          }
+        });
+      });
+    }
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', () => {
+      createParticles();
+      loadVersions(); // Load real version data from Firebase
+      addHoverEffects();
+    });
+
+    // Add some sparkle effects on click
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.apk-btn') || e.target.closest('summary')) {
+        createSparkles(e.clientX, e.clientY);
+      }
+    });
+
+    function createSparkles(x, y) {
+      for (let i = 0; i < 6; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.style.cssText = `
+          position: fixed;
+          width: 4px;
+          height: 4px;
+          background: #64ffda;
+          border-radius: 50%;
+          pointer-events: none;
+          z-index: 1000;
+          left: ${x}px;
+          top: ${y}px;
+        `;
+        document.body.appendChild(sparkle);
+        
+        const angle = (Math.PI * 2 * i) / 6;
+        const velocity = 50 + Math.random() * 50;
+        
+        sparkle.animate([
+          { 
+            transform: 'translate(0, 0) scale(1)', 
+            opacity: 1 
+          },
+          { 
+            transform: `translate(${Math.cos(angle) * velocity}px, ${Math.sin(angle) * velocity}px) scale(0)`, 
+            opacity: 0 
+          }
+        ], {
+          duration: 600,
+          easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+        }).onfinish = () => {
+          document.body.removeChild(sparkle);
+        };
+      }
+    }
+  </script>
 </body>
 </html>
 
