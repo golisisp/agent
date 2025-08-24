@@ -6,19 +6,18 @@
   <title>Advanced Expansion Cards</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f7fa;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f9;
+      padding: 40px;
       display: flex;
       justify-content: center;
-      align-items: center;
-      min-height: 100vh;
     }
 
     .accordion {
       width: 600px;
-      background: #fff;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      background: #fff;
       overflow: hidden;
     }
 
@@ -27,84 +26,84 @@
     }
 
     .accordion-header {
-      background: #36454F;
-      color: #fff;
-      cursor: pointer;
-      padding: 16px 20px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      transition: background 0.3s;
+      justify-content: space-between;
+      padding: 18px 20px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
     }
 
     .accordion-header:hover {
-      background: #2a363f;
+      background: #f0f4ff;
     }
 
-    .accordion-header h3 {
-      margin: 0;
-      font-size: 18px;
+    .accordion-header span {
+      flex: 1;
+      color: #36454F;
     }
 
     .accordion-icon {
-      transition: transform 0.3s;
+      transition: transform 0.3s ease;
+      font-size: 1.2rem;
+      color: #36454F;
     }
 
     .accordion-content {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.4s ease, padding 0.4s ease;
+      transition: max-height 0.5s ease, padding 0.3s ease;
       padding: 0 20px;
+      color: #555;
       background: #fafafa;
     }
 
-    .accordion-content p {
-      padding: 15px 0;
-      margin: 0;
-      color: #333;
-      line-height: 1.6;
+    .accordion-content.open {
+      padding: 20px;
     }
 
-    .accordion-item.active .accordion-content {
-      max-height: 200px; /* adjust based on content */
-      padding: 0 20px 20px;
+    .accordion-content p {
+      margin: 0;
+      line-height: 1.6;
     }
 
     .accordion-item.active .accordion-icon {
       transform: rotate(90deg);
+      color: #0066ff;
     }
   </style>
 </head>
 <body>
-
   <div class="accordion">
     <div class="accordion-item">
       <div class="accordion-header">
-        <h3>📚 Manage Books</h3>
-        <span class="accordion-icon">▶</span>
+        <span>User Profile Settings</span>
+        <div class="accordion-icon">➤</div>
       </div>
       <div class="accordion-content">
-        <p>Here you can add, edit, delete, and view all available books in the system. Advanced search and filter options are available.</p>
+        <p>Manage your personal details, update your email, and change your password in this section.</p>
       </div>
     </div>
 
     <div class="accordion-item">
       <div class="accordion-header">
-        <h3>👤 Manage Users</h3>
-        <span class="accordion-icon">▶</span>
+        <span>Notifications & Alerts</span>
+        <div class="accordion-icon">➤</div>
       </div>
       <div class="accordion-content">
-        <p>Admins can view registered users, assign roles, and track activity logs. User verification and suspension options are also available.</p>
+        <p>Control how and when you receive notifications. You can set SMS, Email, or Push preferences here.</p>
       </div>
     </div>
 
     <div class="accordion-item">
       <div class="accordion-header">
-        <h3>🔔 Notifications</h3>
-        <span class="accordion-icon">▶</span>
+        <span>Billing & Payments</span>
+        <div class="accordion-icon">➤</div>
       </div>
       <div class="accordion-content">
-        <p>Send push notifications, manage campaigns, and track notification engagement. Supports Firebase FCM integration.</p>
+        <p>View invoices, manage saved cards, and update your subscription plan.</p>
       </div>
     </div>
   </div>
@@ -113,19 +112,32 @@
     const items = document.querySelectorAll(".accordion-item");
 
     items.forEach(item => {
-      item.querySelector(".accordion-header").addEventListener("click", () => {
-        item.classList.toggle("active");
+      const header = item.querySelector(".accordion-header");
+      header.addEventListener("click", () => {
+        const openItem = document.querySelector(".accordion-item.active");
+        
+        if (openItem && openItem !== item) {
+          openItem.classList.remove("active");
+          openItem.querySelector(".accordion-content").style.maxHeight = null;
+          openItem.querySelector(".accordion-content").classList.remove("open");
+        }
 
-        // Optional: close others when one is open
-        items.forEach(i => {
-          if (i !== item) i.classList.remove("active");
-        });
+        item.classList.toggle("active");
+        const content = item.querySelector(".accordion-content");
+
+        if (item.classList.contains("active")) {
+          content.style.maxHeight = content.scrollHeight + "px";
+          content.classList.add("open");
+        } else {
+          content.style.maxHeight = null;
+          content.classList.remove("open");
+        }
       });
     });
   </script>
-
 </body>
 </html>
+
 
 
 
