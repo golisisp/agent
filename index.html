@@ -99,6 +99,27 @@
 
 
 
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 15px;
+      background: rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .status-indicator.active {
+      background: #4ade80;
+      box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.1); }
+    }
+
     .arrow {
       font-size: 1.2rem;
       transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -292,7 +313,7 @@
     <details>
       <summary>Full App Update <span class="arrow">▶</span></summary>
       <div class="content">
-        <div class="version">Last Version: <strong id="billing-version">Loading...</strong></div>
+        <div class="version">Last Version: <strong id="ac-version">Loading...</strong></div>
         <a href="#" class="apk-btn">
           <span>📥</span> Download
         </a>
@@ -312,7 +333,7 @@
     <details>
       <summary>Accounting Update <span class="arrow">▶</span></summary>
       <div class="content">
-        <div class="version">Last Version: <strong id="ac-version">Loading...</strong></div>
+        <div class="version">Last Version: <strong id="billing-version">Loading...</strong></div>
         <a href="#" class="apk-btn">
           <span>📥</span> Download
         </a>
@@ -332,7 +353,7 @@
 
   <script>
     // Download link variable
-    const downloadLink = "#";
+    const downloadLink = "https://your-download-url.com/app.apk";
     
     // Create floating particles - DISABLED
     function createParticles() {
@@ -409,6 +430,39 @@
       'elc-version': 'https://golisiapp-default-rtdb.firebaseio.com/ELC_VERSION.json',
       'billing-version': 'https://golisiapp-default-rtdb.firebaseio.com/billingVersion.json'
     };
+
+    // Status URL
+    const statusUrl = 'https://golisiapp-default-rtdb.firebaseio.com/status.json';
+
+    // Fetch status data from Firebase
+    async function loadStatus() {
+      try {
+        const response = await fetch(statusUrl);
+        const data = await response.json();
+        
+        // Map status data to indicators
+        const statusMapping = {
+          'billing-status': data.billingUpdate,
+          'agent-status': data.agentUpdate,
+          'acc-status': data.accUpdate,
+          'elec-status': data.elecUpdate
+        };
+
+        // Update status indicators
+        for (const [elementId, isActive] of Object.entries(statusMapping)) {
+          const element = document.getElementById(elementId);
+          if (element) {
+            if (isActive) {
+              element.classList.add('active');
+            } else {
+              element.classList.remove('active');
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load status:', error);
+      }
+    }
 
     // Fetch version data from Firebase
     async function loadVersions() {
@@ -499,6 +553,7 @@
       
       createParticles();
       loadVersions(); // Load real version data from Firebase
+      loadStatus(); // Load status data from Firebase
       addHoverEffects();
     });
 
