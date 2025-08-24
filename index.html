@@ -3,140 +3,137 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Advanced Expansion Cards</title>
+  <title>Advanced App Updates</title>
   <style>
     body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: #f4f6f9;
-      padding: 40px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .accordion {
-      width: 600px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      background: #fff;
-      overflow: hidden;
-    }
-
-    .accordion-item {
-      border-bottom: 1px solid #eee;
-    }
-
-    .accordion-header {
+      margin: 0;
+      font-family: Arial, sans-serif;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 18px 20px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .accordion-header:hover {
-      background: #f0f4ff;
-    }
-
-    .accordion-header span {
-      flex: 1;
-      color: #36454F;
-    }
-
-    .accordion-icon {
-      transition: transform 0.3s ease;
-      font-size: 1.2rem;
-      color: #36454F;
-    }
-
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease, padding 0.3s ease;
-      padding: 0 20px;
-      color: #555;
-      background: #fafafa;
-    }
-
-    .accordion-content.open {
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #36454F, #2c3e50);
+      color: white;
       padding: 20px;
     }
 
-    .accordion-content p {
-      margin: 0;
-      line-height: 1.6;
+    .container {
+      width: 100%;
+      max-width: 600px;
     }
 
-    .accordion-item.active .accordion-icon {
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    details {
+      background: #2f3e46;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      padding: 0;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+
+    summary {
+      font-size: 1.3rem;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      list-style: none;
+      transition: background 0.3s ease;
+    }
+
+    summary:hover {
+      background: #3c4b57;
+    }
+
+    .arrow {
+      transition: transform 0.3s ease;
+    }
+
+    details[open] .arrow {
       transform: rotate(90deg);
-      color: #0066ff;
+    }
+
+    .content {
+      background: #1b263b;
+      padding: 15px 20px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .version {
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .apk-btn {
+      display: inline-block;
+      padding: 10px 22px;
+      font-size: 1rem;
+      color: #36454F;
+      background: white;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .apk-btn:hover {
+      background: #f1f1f1;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(-5px);}
+      to {opacity: 1; transform: translateY(0);}
     }
   </style>
 </head>
 <body>
-  <div class="accordion">
-    <div class="accordion-item">
-      <div class="accordion-header">
-        <span>User Profile Settings</span>
-        <div class="accordion-icon">➤</div>
-      </div>
-      <div class="accordion-content">
-        <p>Manage your personal details, update your email, and change your password in this section.</p>
-      </div>
-    </div>
+  <div class="container">
+    <h1>📦 App Updates</h1>
 
-    <div class="accordion-item">
-      <div class="accordion-header">
-        <span>Notifications & Alerts</span>
-        <div class="accordion-icon">➤</div>
+    <details>
+      <summary>Full App Update <span class="arrow">▶</span></summary>
+      <div class="content">
+        <div class="version">Last Version: <strong>2.0.1</strong></div>
+        <a href="#" class="apk-btn">Download</a>
       </div>
-      <div class="accordion-content">
-        <p>Control how and when you receive notifications. You can set SMS, Email, or Push preferences here.</p>
-      </div>
-    </div>
+    </details>
 
-    <div class="accordion-item">
-      <div class="accordion-header">
-        <span>Billing & Payments</span>
-        <div class="accordion-icon">➤</div>
+    <details>
+      <summary>Agent Update <span class="arrow">▶</span></summary>
+      <div class="content">
+        <div class="version">Last Version: <strong>1.5.3</strong></div>
+        <a href="#" class="apk-btn">Download</a>
       </div>
-      <div class="accordion-content">
-        <p>View invoices, manage saved cards, and update your subscription plan.</p>
+    </details>
+
+    <details>
+      <summary>Accounting Update <span class="arrow">▶</span></summary>
+      <div class="content">
+        <div class="version">Last Version: <strong>1.2.7</strong></div>
+        <a href="#" class="apk-btn">Download</a>
       </div>
-    </div>
+    </details>
+
+    <details>
+      <summary>Electric Update <span class="arrow">▶</span></summary>
+      <div class="content">
+        <div class="version">Last Version: <strong>1.8.4</strong></div>
+        <a href="#" class="apk-btn">Download</a>
+      </div>
+    </details>
+
   </div>
-
-  <script>
-    const items = document.querySelectorAll(".accordion-item");
-
-    items.forEach(item => {
-      const header = item.querySelector(".accordion-header");
-      header.addEventListener("click", () => {
-        const openItem = document.querySelector(".accordion-item.active");
-        
-        if (openItem && openItem !== item) {
-          openItem.classList.remove("active");
-          openItem.querySelector(".accordion-content").style.maxHeight = null;
-          openItem.querySelector(".accordion-content").classList.remove("open");
-        }
-
-        item.classList.toggle("active");
-        const content = item.querySelector(".accordion-content");
-
-        if (item.classList.contains("active")) {
-          content.style.maxHeight = content.scrollHeight + "px";
-          content.classList.add("open");
-        } else {
-          content.style.maxHeight = null;
-          content.classList.remove("open");
-        }
-      });
-    });
-  </script>
 </body>
 </html>
+
 
 
 
