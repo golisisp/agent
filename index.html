@@ -510,48 +510,48 @@ async function loadStatus() {
     //   }
     // }
 
-    // // Fetch version data from Firebase
-    // async function loadVersions() {
-    //   for (const [elementId, url] of Object.entries(versionUrls)) {
-    //     try {
-    //       const response = await fetch(url);
-    //       const data = await response.json();
+    // Fetch version data from Firebase
+    async function loadVersions() {
+      for (const [elementId, url] of Object.entries(versionUrls)) {
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
           
-    //       const element = document.getElementById(elementId);
-    //       if (element) {
-    //         // Handle different possible JSON structures
-    //         let version = 'Unknown';
-    //         if (typeof data === 'string') {
-    //           version = data;
-    //         } else if (data.version) {
-    //           version = data.version;
-    //         } else if (data.versionName) {
-    //           version = data.versionName;
-    //         } else if (data.currentVersion) {
-    //           version = data.currentVersion;
-    //         } else if (typeof data === 'object') {
-    //           // If it's an object, try to find a version-like property
-    //           const versionKeys = Object.keys(data).filter(key => 
-    //             key.toLowerCase().includes('version') || key.toLowerCase().includes('ver')
-    //           );
-    //           if (versionKeys.length > 0) {
-    //             version = data[versionKeys[0]];
-    //           }
-    //         }
+          const element = document.getElementById(elementId);
+          if (element) {
+            // Handle different possible JSON structures
+            let version = 'Unknown';
+            if (typeof data === 'string') {
+              version = data;
+            } else if (data.version) {
+              version = data.version;
+            } else if (data.versionName) {
+              version = data.versionName;
+            } else if (data.currentVersion) {
+              version = data.currentVersion;
+            } else if (typeof data === 'object') {
+              // If it's an object, try to find a version-like property
+              const versionKeys = Object.keys(data).filter(key => 
+                key.toLowerCase().includes('version') || key.toLowerCase().includes('ver')
+              );
+              if (versionKeys.length > 0) {
+                version = data[versionKeys[0]];
+              }
+            }
             
-    //         element.textContent = version;
-    //         element.style.animation = 'fadeIn 0.5s ease';
-    //       }
-    //     } catch (error) {
-    //       console.error(`Failed to load version for ${elementId}:`, error);
-    //       const element = document.getElementById(elementId);
-    //       if (element) {
-    //         element.textContent = 'Error loading';
-    //         element.style.color = '#ff6b6b';
-    //       }
-    //     }
-    //   }
-    // }
+            element.textContent = version;
+            element.style.animation = 'fadeIn 0.5s ease';
+          }
+        } catch (error) {
+          console.error(`Failed to load version for ${elementId}:`, error);
+          const element = document.getElementById(elementId);
+          if (element) {
+            element.textContent = 'Error loading';
+            element.style.color = '#ff6b6b';
+          }
+        }
+      }
+    }
 
     // Add loading animation
     const loadingStyle = document.createElement('style');
