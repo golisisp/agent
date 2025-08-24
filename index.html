@@ -1,4 +1,122 @@
+
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Updates</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #36454F, #2c3e50);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    details {
+      background: #2f3e46;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      padding: 10px 15px;
+      text-align: left;
+      transition: 0.3s;
+    }
+
+    summary {
+      font-size: 1.3rem;
+      cursor: pointer;
+      font-weight: bold;
+      outline: none;
+    }
+
+    details[open] {
+      background: #1b263b;
+    }
+
+    .content {
+      margin-top: 10px;
+      padding-left: 10px;
+    }
+
+    .version {
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .apk-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: #36454F;
+      background: white;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .apk-btn:hover {
+      background: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📦 App Updates</h1>
+
+    <details>
+      <summary>Full App Update</summary>
+      <div class="content">
+        <div class="version">Last Version: <strong>2.0.1</strong></div>
+        <a href="#" class="apk-btn">Download</a>
+      </div>
+    </details>
+
+    <details>
+      <summary>Agent Update</summary>
+      <div class="content">
+        <div class="version">Last Version: <strong>1.5.3</strong></div>
+        <a href="#" class="apk-btn">Download</a>
+      </div>
+    </details>
+
+    <details>
+      <summary>Accounting Update</summary>
+      <div class="content">
+        <div class="version">Last Version: <strong>1.2.7</strong></div>
+        <a href="#" class="apk-btn">Download</a>
+      </div>
+    </details>
+
+    <details>
+      <summary>Electric Update</summary>
+      <div class="content">
+        <div class="version">Last Version: <strong>1.8.4</strong></div>
+        <a href="#" class="apk-btn">Download</a>
+      </div>
+    </details>
+
+  </div>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -58,3 +176,4 @@
   </div>
 </body>
 </html>
+ -->
